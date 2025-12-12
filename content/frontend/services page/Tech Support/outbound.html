@@ -46,7 +46,7 @@
 
       <div id="hero-carousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
   <div class="carousel-item active">
-    <video class="hero-video" autoplay muted loop playsinline preload="metadata" poster="./assets/img/slider/carousal1.jpg">
+    <video class="hero-video" autoplay muted loop playsinline preload="metadata" poster="/assets/img/slider/carousal1.jpg">
       <source src="/content/frontend/assets/img/services/frontoffice services/front-office services.mp4" type="video/mp4">
 
     </video>
@@ -176,5 +176,13 @@ When you partner with us, you won’t need to develop a separate Outbound Call S
     loadComponent('header', '/base/header.html');
     loadComponent('footer', '/base/footer.html');
   </script>
+  <script src="/vendors/aos/aos.js"></script>
+<script>
+  AOS.init({
+    duration: 800,
+    once: true
+  });
+</script>
+
 </body>
 </html>

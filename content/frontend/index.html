@@ -6,6 +6,15 @@
   <title>Niftel | Performance Speaks</title>
   <meta name="description" content="">
   <meta name="keywords" content="">
+<meta http-equiv="Content-Security-Policy" content="
+  default-src 'self';
+  script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com https://static.cloudflareinsights.com;
+  style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com https://cdn.jsdelivr.net;
+  font-src 'self' https://fonts.gstatic.com https://fonts.googleapis.com data:;
+  img-src 'self' data: https:;
+  connect-src 'self' https://static.cloudflareinsights.com https://cdn.jsdelivr.net;
+">
+
 
   <meta name="robots" content="noindex, nofollow">
 
@@ -366,7 +375,7 @@
 
       <div id="hero-carousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
   <div class="carousel-item active">
-    <video class="hero-video" autoplay muted loop playsinline preload="metadata" poster="./assets/img/slider/carousal1.jpg">
+    <video class="hero-video" autoplay muted loop playsinline preload="metadata" poster="/assets/img/slider/carousal1.jpg">
       <source src="assets/img/slider/carousal1.mp4" type="video/mp4">
 
     </video>
@@ -722,7 +731,6 @@
         </div>
       </div>
     </div>
-
 </div>
 
         <div class="row">
@@ -807,6 +815,7 @@
     </div>
 
     <!-- Swiper (mobile only) -->
+
     <div class="swiper myClientsSwiper mobile-swiper">
       <div class="swiper-wrapper">
         <div class="swiper-slide"><img src="assets/img/clients/swiggy-logo-png_seeklogo-348257-removebg-preview.png" alt=""></div>
@@ -820,11 +829,8 @@
 
   </div>
 </section>
-
-
-
-  <!-- Team Section -->
-
+  
+<!-- Team Section -->
 
 <section class="py-5 ">
   <div class="container section-title mb-5" data-aos="fade-up" data-aos-duration="800">
@@ -1040,28 +1046,44 @@
   <div id="footer"></div>
 
   <!-- Import include.js -->
-  <script src="./assets/js/include.js"></script>
-  <script src="./assets/js/main.js"></script>
+  <!-- include.js and main.js are loaded once later (consolidated) -->
 
   <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
   
   <div id="preloader"></div>
 
-  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="../vendors/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="../vendors/php-email-form/validate.js"></script>
-  <script src="../vendors/aos/aos.js"></script>
-  <script src="../vendors/swiper/swiper-bundle.min.js"></script>
-  <script src="../vendors/purecounter/purecounter_vanilla.js"></script>
-  <script src="../vendors/imagesloaded/imagesloaded.pkgd.min.js"></script>
-  <script src="../vendors/isotope-layout/isotope.pkgd.min.js"></script>
-  <script src="../vendors/glightbox/js/glightbox.min.js"></script>
-
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+  <script src="../vendors/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <!-- Load Required JS Files -->
   <script src="assets/js/include.js"></script>
-  <script src="assets/js/main.js"></script>
-  <script src="assets/js/swiper.js"></script>
-  <script src="assets/js/scroll.js"></script>
   <script src="assets/js/aos.js"></script>
+  <script src="assets/js/swiper-bundle.min.js"></script>
+  <!-- PureCounter library (local vendor copy) -->
+  <script src="../vendors/purecounter/purecounter_vanilla.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script>
+    new PureCounter();
+  </script>
+  <script>
+    // Function to load HTML components
+    function loadComponent(id, url) {
+      fetch(url)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.text();
+        })
+        .then(data => {
+          document.getElementById(id).innerHTML = data;
+        })
+        .catch(error => {
+          console.error('Error loading component:', error);
+        });
+    }
+  </script>
+
 <!-- Cloudflare Web Analytics -->
 <script>
     window.addEventListener("scroll", function () {
@@ -1118,6 +1140,7 @@
       769: { enabled: false } // disable on desktop
     }
   });
+
 </script>
 
 </body>

@@ -733,8 +733,18 @@ body.scrolled .header {
     font-size: 30px;
     cursor: pointer;
     margin: 0 !important;
-    padding: 0 !important;
+    padding: 15px !important;
     z-index: 99999;
+    background: none;
+    border: none;
+    color: inherit;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    touch-action: manipulation;
   }
 
 

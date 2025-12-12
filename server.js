@@ -21,6 +21,11 @@ app.use('/vendors', express.static(path.join(__dirname, 'content/vendors')));
 // Serve Cloudflare/cdn-cgi static scripts if referenced
 app.use('/cdn-cgi', express.static(path.join(__dirname, 'cdn-cgi')));
 
+// Handle Cloudflare RUM beacon POSTs locally (respond 204 to avoid 404s during local dev)
+app.post('/cdn-cgi/rum', (req, res) => {
+  res.sendStatus(204);
+});
+
 // Redirect legacy/absolute paths to the correct locations under the static root.
 // This helps when files or templates reference `/content/frontend/...` or `/main/...`.
 app.use((req, res, next) => {
@@ -37,17 +42,15 @@ app.use((req, res, next) => {
 
 // Handle devtools endpoint specifically before static files
 app.get('/.well-known/appspecific/com.chrome.devtools.json', (req, res) => {
-  // Broaden CSP to allow Google Maps embed and related resources so
-  // the iframe-based map can load its scripts and assets.
-  res.setHeader("Content-Security-Policy", "default-src 'self'; connect-src 'self' https://static.cloudflareinsights.com https://maps.googleapis.com https://maps.gstatic.com https://unpkg.com https://cdn.jsdelivr.net; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com https://maps.googleapis.com https://maps.gstatic.com https://unpkg.com https://cdn.jsdelivr.net; img-src 'self' data: https: https://maps.gstatic.com https://*.tile.openstreetmap.org; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com https://cdn.jsdelivr.net; font-src 'self' https://fonts.gstatic.com https://fonts.googleapis.com; frame-src 'self' https://www.google.com https://maps.google.com https://www.openstreetmap.org https://www.google.co.in https://maps.gstatic.com;");
+
+  res.setHeader("Content-Security-Policy", "default-src 'self'; connect-src 'self' https://static.cloudflareinsights.com https://maps.googleapis.com https://maps.gstatic.com https://unpkg.com https://cdn.jsdelivr.net; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com https://maps.googleapis.com https://maps.gstatic.com https://unpkg.com https://cdn.jsdelivr.net; img-src 'self' data: https: https://maps.gstatic.com https://*.tile.openstreetmap.org; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com https://cdn.jsdelivr.net; font-src 'self' https://fonts.gstatic.com https://fonts.googleapis.com data:; frame-src 'self' https://www.google.com https://maps.google.com https://www.openstreetmap.org https://www.google.co.in https://maps.gstatic.com;");
   res.status(404).end(); // Return 404 as this endpoint doesn't exist
 });
 
-// Set Content Security Policy before static files to override serve-static's CSP
 app.use((req, res, next) => {
   // Broaden CSP to allow Google Maps embed and related resources so
   // the iframe-based map can load its scripts and assets.
-  res.setHeader("Content-Security-Policy", "default-src 'self'; connect-src 'self' https://static.cloudflareinsights.com https://maps.googleapis.com https://maps.gstatic.com https://unpkg.com https://cdn.jsdelivr.net; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com https://maps.googleapis.com https://maps.gstatic.com https://unpkg.com https://cdn.jsdelivr.net; img-src 'self' data: https: https://maps.gstatic.com https://*.tile.openstreetmap.org; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com https://cdn.jsdelivr.net; font-src 'self' https://fonts.gstatic.com https://fonts.googleapis.com; frame-src 'self' https://www.google.com https://maps.google.com https://www.openstreetmap.org https://www.google.co.in https://maps.gstatic.com;");
+  res.setHeader("Content-Security-Policy", "default-src 'self'; connect-src 'self' https://static.cloudflareinsights.com https://maps.googleapis.com https://maps.gstatic.com https://unpkg.com https://cdn.jsdelivr.net; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com https://maps.googleapis.com https://maps.gstatic.com https://unpkg.com https://cdn.jsdelivr.net; img-src 'self' data: https: https://maps.gstatic.com https://*.tile.openstreetmap.org; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com https://cdn.jsdelivr.net; font-src 'self' https://fonts.gstatic.com https://fonts.googleapis.com data:; frame-src 'self' https://www.google.com https://maps.google.com https://www.openstreetmap.org https://www.google.co.in https://maps.gstatic.com;");
   next();
 });
 
